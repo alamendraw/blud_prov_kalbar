@@ -13915,7 +13915,7 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
                 $query4 = $this->db->query($sql4);
                 $no     = 0;  
                 $tot=0;                                
-                $oke=1;
+                $oke=1; $nil_p=0; $angnil_p=0;
                 foreach ($query4->result() as $row4)
                 {
                     
@@ -13925,7 +13925,7 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
                     $real_lalu = number_format($row4->thn_m1,"2",",",".");
                     $cetak     = $row4->cetak;
                     $n         = $row4->kode_1;
-                    $n2        = str_replace("'","",$row4->kode_2);
+                    $n2        = $row4->kode_2;
                     // echo $n2; die;
                     $n3        = $row4->kode_3;
                     $n4        = $row4->kode_4;
@@ -14050,12 +14050,14 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
                                 $surl= $nil_p-$nil;
                                 $sur= $angnil_p-$angnil;
                                 $surx=$sur-$surl;  
+                                $pers = ($surl>0)?$this->persen($sur,$surl):'';
+                                // echo $surl; die;
                             $cRet    .= "<tr><td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"5%\" align=\"center\">$nor</td>                                     
                                         <td style=\"vertical-align:top;border-top: solid 1px black; text-align='right'; border-left: none;border-right: none;\" width=\"40%\"><b>$nama</td>
                                         <td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"20%\" align=\"right\">".$this->minim($sur)."</td>
                                         <td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"20%\" align=\"right\">".$this->minim($surl)."</td>
                                         <td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"15%\" align=\"right\">".$this->minim($surx)."</td>
-                                        <td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"10%\" align=\"right\">".$this->persen($sur,$surl)."</td>
+                                        <td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"10%\" align=\"right\">". $pers."</td>
                                     </tr>";
 
                         break;
