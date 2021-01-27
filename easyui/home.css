@@ -1,0 +1,85 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 14 Mar 15, 14:43:46
+    Author     : VANDA
+*/
+
+#box_post{
+    width: 680px;
+    border: 0px dashed rgb(204, 204, 204);
+    float: left;
+    border-radius: 4px;
+    margin-left: 100px;
+    margin-bottom: 40px;
+}
+
+#post_isi{
+    border: 0px solid #666;
+}
+
+
+
+
+/*Menu Icon di halaman Home*/
+.shortcutHome a{
+    width: 72px;
+    padding: 20px;
+    border: 1px solid #dcdcdc;
+    height: 100px;
+    float: left;
+    margin: 10px 11px 10px 11px;
+    text-align: center;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -o-border-radius: 5px;
+    -webkit-box-shadow: rgb(234, 233, 225) 0px 0px 48px inset, rgba(0, 0, 0, 0.0980392) 0px 4px 6px, rgba(0, 0, 0, 0.298039) 0px 1px 1px;
+    box-shadow: rgb(234, 233, 225) 0px 0px 48px inset, rgba(0, 0, 0, 0.0980392) 0px 4px 6px, rgba(0, 0, 0, 0.298039) 0px 1px 1px;
+
+}
+.shortcutHome a:hover{
+    color: #800000;
+    text-decoration: none;
+}
+.shortcutHome a:hover img{
+    opacity: 1;
+    color: #5b5b5b;
+    padding-top: 10px;
+    text-decoration: none;
+}
+.shortcutHome img {
+    width: 64px;
+    height: 64px;
+    opacity: 0.8;
+    -webkit-transition: padding-top 250ms ease-out;
+    -moz-transition: padding-top 250ms ease-out;
+    -o-transition: padding-top 250ms ease-out;
+}
+.well{
+    min-height:20px;
+    padding:19px;
+    margin-bottom:20px;
+    background-color:#f5f5f5;border:1px solid #e3e3e3;
+    -webkit-border-radius:4px;-moz-border-radius:4px;
+    border-radius:4px;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,0.05);
+    -moz-box-shadow:inset 0 1px 1px rgba(0,0,0,0.05);
+    box-shadow:inset 0 1px 1px rgba(0,0,0,0.05)
+}
+.well blockquote{
+    border-color:#ddd;
+    border-color:rgba(0,0,0,0.15)
+}
+.well-large{
+    padding:24px;
+    -webkit-border-radius:6px;
+    -moz-border-radius:6px;
+    border-radius:6px}
+.well-small{
+    padding:9px;
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    border-radius:3px
+}

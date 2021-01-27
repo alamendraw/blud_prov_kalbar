@@ -1,0 +1,107 @@
+@charset "utf-8";
+/* CSS Document */
+
+body { background: #F8F8F8;  padding:0; font:normal 12px "Trebuchet MS", Arial, Helvetica, sans-serif; color:#444;
+        background-image:url(../image/bt5.png),url(../image/bt5.png);
+		background-position:left top,left top;
+		background-repeat:repeat-x,repeat;
+      }
+#wrapper { margin:0 auto; padding:0; width:1024px; background:#fff; }
+/*#header { margin:0 auto; padding:0; height:40px; background:#069; border-bottom:solid 4px #666; width:100%; height: 100px; }*/
+#header { margin:0 auto; padding:0; height:100px; background-image:url(../image/siadinda2.png); border-bottom:solid 4px #666; width:100%;  border-radius:10px; box-shadow: 0px 0px 20px black;  }
+#header .title { width:500px; padding:0 10px; float:left; font:bold 22px Georgia, "Times New Roman", Times, serif; color:blue; line-height:38px;  }
+#menu { height:30px; width:100%; background:#CCC; border-bottom:solid 1px #999; box-shadow: 0px 0px 10px black;  }
+
+/*#content { background-image: url(../image/body.jpg);  margin:0; padding:10px 50px;  border:solid 1px #ccc; box-shadow: 0px 0px 20px black; height: 510px; }*/
+#content { margin:0; padding:10px 50px; border:solid 1px #ccc; box-shadow: 0px 0px 20px black;}
+#content h1 { margin:0 0 15px 0; padding:0 0 5px 0; border-bottom:solid 1px #ddd; color:#444; font:normal 22px "Trebuchet MS", Arial, Helvetica, sans-serif; text-transform:uppercase; }
+#content h1 span a { font-size:12px; margin:-5px 0 5px 15px; color:#069; text-decoration:none; background:#ddd; border:solid 1px #ccc; padding:0 4px; }
+#content h1 span a:hover { color:#069; text-decoration:none; background:#eee; border:solid 1px #ccc; }
+#content table { border-collapse:collapse; margin-bottom:15px; }
+#content table.narrow { width:100%; border-collapse:collapse; }
+#content table th { background:#ccc; color:#444; border-bottom:solid 1px #aaa; border-top:solid 1px #aaa; font-size:14px; text-align:left; text-transform:uppercase; font-weight:normal; padding:5px; }
+#content table td { padding:5px; border-bottom:solid 1px #ddd; }
+#content table td.noborder { border:none; }
+#content table tr:hover, #content table tr.odd:hover { background:#E9F1F8; }
+#content table tr.odd { background:#eee; }
+								
+
+#inner_content {
+    border : solid 1px #ffffff ;
+    border-radius: 10px;
+    background-color: white;
+    top: 10px;
+    left: 10px;
+    width:980px;
+	height:480px;
+	position: absolute;
+    opacity: .8;     
+}
+
+#close_inner_content {
+    border : solid 1px #ccc ;
+    border-radius: 12px;
+    padding: 2px;
+    width: 15px;
+    height: 15px;
+    top: 10px;
+    left: 951px;
+    cursor: context-menu;
+    text-align: center;
+    position: absolute;
+    color: gray;
+}
+
+
+/* form element */
+form.basic { margin:0 0 15px 0; padding:0; }
+form.basic input, input.txtx, select, textarea { margin:5px 0 10px 5px; padding:5px; font:normal12px Arial, Helvetica, sans-serif; color:#444; background:#fff; border:solid 1px #ccc; }
+
+#footer {
+    color: black;
+    background: #FFFF99;
+    height: 20px;
+    width:100%;
+    text-align: center;
+    border-bottom:solid 4px #666;
+    box-shadow: 0px 10px 20px black; 
+   
+}
+
+.clear { clear:both; }
+
+input[type="text"], input[type="password"]{
+	font-size:12px;
+	padding:4px;
+	border:1px solid #CCC;
+}
+
+	input[type="text"]:hover, input[type="password"]:hover{
+		border:1px solid #666666;
+	}
+	
+	input[type="text"]:focus, input[type="password"]:focus{
+		border:1px solid ORANGE;
+		box-shadow:0px 0px 6px ORANGE inset;
+	}
+
+input[type="submit"] {
+	background: #CCC;
+	padding: 4px 6px;
+	font-family: "Times New Roman", Times, serif;
+	text-decoration: none;
+	font-size: 12px;
+	line-height: 12px;
+	font-weight:bold;
+	color: #333333;
+	text-align: center;
+	cursor: pointer;
+}
+
+input[type="submit"]:hover {
+	text-decoration: underline;
+}
+
+input[type="submit"]:focus {
+	text-decoration: none;
+}

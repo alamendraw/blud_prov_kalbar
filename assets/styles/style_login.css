@@ -1,0 +1,54 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+body{
+	background: #fff;
+}
+h1{	
+	width: 20%;
+	height: 20%;
+}
+.container{
+	width: 60%;
+	margin: 50px auto;
+	padding: 10px;
+	overflow: hidden;
+	
+}
+.middle{
+	width: 90%;
+}
+.middle img{	
+	position: absolute;
+	width: 500px;
+	height: auto;
+	margin-top:100px;
+	margin-bottom:200px;
+	left:30%;
+	top:5;
+}
+.login{
+	position: absolute;
+	width: 200px;
+	height: 250px;
+	margin-top:250px;
+	margin-bottom:200px;
+	left:35%;
+	top:5;
+}
+.login input[type="text"],
+.login input[type="password"]{
+	border: 5%;
+	width: 250px;
+	color: #030000;
+	padding: 10px 10px 10px 20px;
+	margin: 5% 10%;
+}
+.login input[type="submit"]{
+	font-family: arial bold;
+	font-size: 15px;
+	float: right;
+	border: 5%;
+	color: #030000;
+}

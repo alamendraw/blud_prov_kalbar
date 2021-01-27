@@ -1,0 +1,41 @@
+/*
+             ,----------------,              ,---------,
+        ,-----------------------,          ,"        ,"|
+      ,"                      ,"|        ,"        ,"  |
+     +-----------------------+  |      ,"        ,"    |
+     |  .-----------------.  |  |     +---------+      |
+     |  |                 |  |  |     | -==----'|      |
+     |  |  CSS	 		  |  |  |     |         |      |
+     |  |  CREATED BY	  |  |  |/----|`---=    |      |
+     |  |  C:\JR>_	      |  |  |   ,/|==== ooo |      ;
+     |  |                 |  |  |  // |(((( [33]|    ,"
+     |  `-----------------'  |," .;'| |((((     |  ,"
+     +-----------------------+  ;;  | |         |,"
+        /_)______________(_/  //'   | +---------+
+   ___________________________/___  `,
+  /  oooooooooooooooo  .o.  oooo /,   \,"-----------
+ / ==ooooooooooooooo==.o.  ooo= //   ,`\--{)B     ,"
+/_==__==========__==_ooo__ooo=_/'   /___________,"
+`-----------------------------'
+
+*/
+/*script*/
+body,h1,img{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline;}
+ol,ul{list-style:none;margin:0;padding:0;}a{text-decoration:none;}.clear{clear:both;}
+body{background:url(../images/bg_dotted.png);font-family:'SourceSansPro-Regular';font-size:100%;}
+.form-box {width:70%;margin:4.0% auto 0;background:#fff;box-shadow:0px 0px 30px #333333;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;-o-border-radius:4px;-ms-border-radius:4px;}
+.box-title{width:45%;float:left;background:#069;padding:12.1% 0;}
+.section-style .goverment-name{position:relative;display:block;outline:none;border:none;font-size:20px;color:#fff;margin-top:0;text-align:center;font-family:'Lucida Grande', Geneva, Candara, Tahoma, sans-serif;}
+.system-name h1{font-size:2.4em;margin-top:1.1%;color:#fff;text-align:center;font-family:'Lucida Grande', Geneva, Candara, Tahoma, sans-serif;}
+.footer-name h1{font-size:0.8em;bottom:-90px;position:relative;color:#000000;text-shadow:2px 2px 8px #FFF;text-align:center;font-family:'Palatino Linotype', Book Antiqua, Palatino, serif;}
+.form-login{width:55%;float:right;padding:4% 0;background:#fff;}.form-login input[type="text"], 
+.form-login input[type="password"]{outline:none;font-size:16px;font-style:italic;color:#069;padding:20px 30px 10px 10px;margin:0;width:89.87%;border:none;border-bottom:2px solid #069;-webkit-appearance:none;}
+.form-login input.username{background:url(../images/ic-user-1.png) no-repeat 98% 67%;}
+.form-login input.email{background:url(../images/ic-mail-1.png) no-repeat 98% 67%;}
+.form-login input.password{background: url(../images/ic-lock-1.png) no-repeat 98% 67%;}
+.login-title{text-shadow:none;color:#069;list-style:none;padding-left:19px;text-align:center;font-family:'Lucida Grande', Geneva, Candara, Tahoma, sans-serif;}
+.login-document{padding:0px 25px;margin-top:3%;}
+.login-confirm input[type="submit"]{display:inline-block;padding:15px 25px;text-align:center;	text-decoration:none;outline:none;color:#fff;background-color:#069;border:none;border-radius:15px;box-shadow:0 9px #999;font-size:20px;cursor:pointer;font-family:'Lucida Grande', Geneva, Candara, Tahoma, sans-serif;}/*.login-confirm input[type="submit"]:hover{background:#333333;}*/
+.login-confirm input[type="submit"]:active, input[type="submit"]:disabled{/*background-color:#333333;*/cursor:wait;box-shadow:0 5px #666;transform:translateY(4px)}
+.select{padding:2% 0;background:#FFF;outline:none;font-size:16px;color:#069;padding:10px 20px 5px 5px;margin:0;border:none;border-bottom:2px solid #069;-webkit-appearance:none;font-family:'Palatino Linotype', Book Antiqua, Palatino, serif;}
+a.error-message{font-size:16px;text-shadow:2px 2px 10px #333333;color:RED;font-family:'Palatino Linotype', Book Antiqua, Palatino, serif;background:url(../images/ic-warning-1.png) no-repeat;}/*script*/
