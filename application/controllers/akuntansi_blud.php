@@ -13839,15 +13839,10 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
             $jabatan  = $rowttd->jab;
             $pangkat  = $rowttd->pangkat;
         }
-        
-
-    //function cetak_lra(){ created by henri si bre
-    
+         
        $sqlsc="SELECT nm_skpd FROM ms_skpd_blud where kd_skpd='$id' ";
-                 $sqlsclient=$this->db->query($sqlsc);
-                 foreach ($sqlsclient->result() as $rowsc)
-                {
-                   
+                $sqlsclient=$this->db->query($sqlsc);
+                foreach ($sqlsclient->result() as $rowsc) {
                     $nmskpd  = $rowsc->nm_skpd;
                 } 
         
@@ -13863,7 +13858,7 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
             else {
         $nilaibulan=".31 JANUARI.28 FEBRUARI.31 MARET.30 APRIL.31 MEI.30 JUNI.31 JULI.31 AGUSTUS.30 SEPTEMBER.31 OKTOBER.30 NOVEMBER.31 DESEMBER";}
      
-     $arraybulan=explode(".",$nilaibulan);
+        $arraybulan=explode(".",$nilaibulan);
        
         $cRet .="<table style=\"border-collapse:collapse;\" width=\"100%\" align=\"center\" border=\"0\" cellspacing=\"0\" cellpadding=\"4\">
                     <tr>
@@ -13878,27 +13873,27 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
                     <tr>
                          <td align=\"center\">&nbsp;</td>
                     </tr>
-                  </table>";        
+                </table>";        
         
         
         $cRet .= "<table style=\"border-collapse:collapse;\" width=\"100%\" align=\"center\" border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
                       
-                        <tr><td bgcolor=\"#CCCCCC\" width=\"5%\" align=\"center\"><b>NO</b></td>                            
-                            <td bgcolor=\"#CCCCCC\" width=\"40%\" align=\"center\"><b>URAIAN</b></td>
-                            <td bgcolor=\"#CCCCCC\" width=\"20%\" align=\"center\"><b>ANGGARAN</b></td>
-                            <td bgcolor=\"#CCCCCC\" width=\"20%\" align=\"center\"><b>REALISASI</b></td>
-                            <td bgcolor=\"#CCCCCC\" width=\"15%\" align=\"center\" ><b>LEBIH</br>(KURANG)</b></td>
-                            <td bgcolor=\"#CCCCCC\" width=\"10%\" align=\"center\" ><b>%</b></td>   
-                        </tr>
-      
-                   
-                     <tr><td style=\"vertical-align:top;border-top: none;border-bottom: none;\" width=\"5%\" align=\"center\">&nbsp;</td>                            
-                            <td style=\"vertical-align:top;border-top: none;border-bottom: none;\" width=\"40%\">&nbsp;</td>
-                            <td style=\"vertical-align:top;border-top: none;border-bottom: none;\" width=\"20%\">&nbsp;</td>
-                            <td style=\"vertical-align:top;border-top: none;border-bottom: none;\" width=\"20%\">&nbsp;</td>
-                            <td style=\"vertical-align:top;border-top: none;border-bottom: none;\" width=\"15%\">&nbsp;</td>
-                            <td style=\"vertical-align:top;border-top: none;border-bottom: none;\" width=\"10%\">&nbsp;</td>
-                        </tr>";
+                    <tr><td bgcolor=\"#CCCCCC\" width=\"5%\" align=\"center\"><b>NO</b></td>                            
+                        <td bgcolor=\"#CCCCCC\" width=\"40%\" align=\"center\"><b>URAIAN</b></td>
+                        <td bgcolor=\"#CCCCCC\" width=\"20%\" align=\"center\"><b>ANGGARAN</b></td>
+                        <td bgcolor=\"#CCCCCC\" width=\"20%\" align=\"center\"><b>REALISASI</b></td>
+                        <td bgcolor=\"#CCCCCC\" width=\"15%\" align=\"center\" ><b>LEBIH</br>(KURANG)</b></td>
+                        <td bgcolor=\"#CCCCCC\" width=\"10%\" align=\"center\" ><b>%</b></td>   
+                    </tr>
+                    
+                    <tr>
+                        <td style=\"vertical-align:top;border-top: none;border-bottom: none;\" width=\"5%\" align=\"center\">&nbsp;</td>                            
+                        <td style=\"vertical-align:top;border-top: none;border-bottom: none;\" width=\"40%\">&nbsp;</td>
+                        <td style=\"vertical-align:top;border-top: none;border-bottom: none;\" width=\"20%\">&nbsp;</td>
+                        <td style=\"vertical-align:top;border-top: none;border-bottom: none;\" width=\"20%\">&nbsp;</td>
+                        <td style=\"vertical-align:top;border-top: none;border-bottom: none;\" width=\"15%\">&nbsp;</td>
+                        <td style=\"vertical-align:top;border-top: none;border-bottom: none;\" width=\"10%\">&nbsp;</td>
+                    </tr>";
  
                 if($apbd=="blud"){
                     $exe="lra_blud";
@@ -13915,12 +13910,11 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
                 $query4 = $this->db->query($sql4);
                 $no     = 0;  
                 $tot=0;                                
-                $oke=1; $nil_p=0; $angnil_p=0;
+                $oke=1;
                 $sur_pa=0; $sur_pr=0;
                 $sur_ba=0; $sur_br=0;
                 foreach ($query4->result() as $row4)
                 {
-                    
                     $nor       = $row4->nor;   
                     $nama      = $row4->uraian;     
                     $bold      = $row4->bold;
@@ -13931,6 +13925,7 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
                     $n3        = str_replace("'","",$row4->kode_3);
                     $n4        = str_replace("'","",$row4->kode_4);
                     $n5        = str_replace("'","",$row4->kode_5);
+
                     if($n!='xxx'){
                         $whr = "and left(b.kd_rek5,1)=$n";
                     }else if($n2!='xxx'){
@@ -13954,34 +13949,35 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
                         $sur_ba=$trh->anggaran; 
                         $sur_br=$trh->nilai;
                     }
-
-                    //anggaran//realisasi//bersatu
-                    $sql5   = " SELECT SUM(b.nilai_ang) as anggaran, SUM(b.nilai_real) as nilai FROM $exe($cbulan,$ag_tox,$thn) b WHERE kd_skpd='$id' $whr;                    ";
-                    //  and ((left(b.kd_rek5,1) in ($n) or left(kd_rek5,2) in ($n2)) or left(kd_rek5,3) in ($n3)) 
+ 
+                    $sql5   = " SELECT SUM(b.nilai_ang) as anggaran, SUM(b.nilai_real) as nilai FROM $exe($cbulan,$ag_tox,$thn) b WHERE kd_skpd='$id' $whr";
+                    
                     $query5 = $this->db->query($sql5); 
                     if($query5){
                         $trh    = $query5->row();
                         $nil    = $trh->nilai;
                         $angnil = $trh->anggaran;
-
-
-                    
+ 
                         $oke++;
                         if ($angnil < 0){
-                            $x11="("; $angnilx=$angnil*-1; $y11=")";}
-                        else {
-                            $x11=""; $angnilx=$angnil; $y11="";}
+                            $x11="("; $angnilx=$angnil*-1; $y11=")";
+                        }else {
+                            $x11=""; $angnilx=$angnil; $y11="";
+                        }
                         
                         if ($nil < 0){
-                            $x12="("; $nilx=$nil*-1; $y12=")";}
-                        else {
-                            $x12=""; $nilx=$nil; $y12="";}
+                            $x12="("; $nilx=$nil*-1; $y12=")";
+                        }else {
+                            $x12=""; $nilx=$nil; $y12="";
+                        }
                         
                         $real_s = $angnil - $nil;
                         if ($real_s < 0){
-                            $x1="("; $real_sx=$real_s*-1; $y1=")";}
-                        else {
-                            $x1=""; $real_sx=$real_s; $y1="";}
+                            $x1="("; $real_sx=$real_s*-1; $y1=")";
+                        }else{
+                            $x1=""; $real_sx=$real_s; $y1="";
+                        }
+
                         $selisih = number_format($real_sx,"2",",",".");
                         if ($nil==0){
                             $tmp=1;
@@ -13996,16 +13992,15 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
                         $no       = $no + 1;
                     }
                     
-
                     switch ($row4->bold) {
                         case 0:
                             $cRet    .= "<tr><td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"5%\" align=\"center\">$nor</td>                                     
-                                        <td style=\"vertical-align:top;border-top: solid 1px black;border-left: none;border-right: none;\" width=\"40%\">$nama</td>
-                                        <td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"20%\" align=\"right\"></td>
-                                        <td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"20%\" align=\"right\"></td>
-                                        <td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"15%\" align=\"right\"></td>
-                                        <td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"10%\" align=\"right\"></td>
-                                    </tr>";
+                                    <td style=\"vertical-align:top;border-top: solid 1px black;border-left: none;border-right: none;\" width=\"40%\">$nama</td>
+                                    <td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"20%\" align=\"right\"></td>
+                                    <td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"20%\" align=\"right\"></td>
+                                    <td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"15%\" align=\"right\"></td>
+                                    <td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"10%\" align=\"right\"></td>
+                                </tr>";
                             break;
                         case 1:
                             $cRet    .= "<tr><td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"5%\" align=\"center\">$nor</td>                                     
@@ -14073,8 +14068,7 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
                                 $sur= $sur_pr-$sur_br;
                                 $surx=$sur-$surl;  
  
-                                $pers = ($surl>0)?$this->persen($sur,$surl):'';
-                                // echo $surl; die;
+                                $pers = ($surl>0)?$this->persen($sur,$surl):''; 
                             $cRet    .= "<tr><td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"5%\" align=\"center\">$nor</td>                                     
                                         <td style=\"vertical-align:top;border-top: solid 1px black; text-align='right'; border-left: none;border-right: none;\" width=\"40%\"><b>$nama</td>
                                         <td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"20%\" align=\"right\">".$this->minim($sur)."</td>
@@ -14085,80 +14079,75 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
 
                         break;
                 
-                    }
-                
+                    }                
                 }
 
+        $cRet .=       " </table>";
+        $data['prev']   = $cRet;
+        $cRet         .= "</table>";
+        
+        $cRet .="<table style=\"border-collapse:collapse;\" width=\"100%\" align=\"center\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
+                    <tr>
+                        <td align=\"center\" width=\"50%\"> &nbsp; </td>
+                        <td align=\"center\" width=\"50%\"> &nbsp; </td>
+                    </tr>
+                    <tr>
+                        <td align=\"center\" width=\"50%\">&nbsp;</td>
+                        <td align=\"center\" width=\"50%\"> Pontianak, $ctgl_ttd </td>
+                    </tr>      
+                    <tr>
+                        <td align=\"center\" width=\"50%\">&nbsp;</td>
+                        <td align=\"center\" width=\"50%\"> $jabatan </td>
+                    </tr>  
+                    <tr>
+                        <td align=\"center\" width=\"50%\"> &nbsp; </td>
+                        <td align=\"center\" width=\"50%\"> &nbsp; </td>
+                    </tr>
+                    <tr>
+                        <td align=\"center\" width=\"50%\"> &nbsp; </td>
+                        <td align=\"center\" width=\"50%\"> &nbsp; </td>
+                    </tr>
+                    <tr>
+                        <td align=\"center\" width=\"50%\"> &nbsp; </td>
+                        <td align=\"center\" width=\"50%\"> &nbsp; </td>
+                    </tr>
+                    <tr>
+                        <td align=\"center\" width=\"50%\">&nbsp;</td>
+                        <td align=\"center\" width=\"50%\"> $namax </td>
+                    </tr>
+                    <tr>
+                        <td align=\"center\" width=\"50%\">&nbsp;</td>
+                        <td align=\"center\" width=\"50%\"> NIP :$nip </td>
+                    </tr>
+                </table>";
 
-         $cRet .=       " </table>";
-        $data['prev']= $cRet;
-         $cRet         .= "</table>";
-         
-         
-         $cRet .="<table style=\"border-collapse:collapse;\" width=\"100%\" align=\"center\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
-         <tr>
-         <td align=\"center\" width=\"50%\"> &nbsp; </td>
-         <td align=\"center\" width=\"50%\"> &nbsp; </td>
-         </tr>
-         <tr>
-         <td align=\"center\" width=\"50%\">&nbsp;</td>
-         <td align=\"center\" width=\"50%\"> Pontianak, $ctgl_ttd </td>
-         </tr>      
-         <tr>
-         <td align=\"center\" width=\"50%\">&nbsp;</td>
-         <td align=\"center\" width=\"50%\"> $jabatan </td>
-         </tr>  
-         <tr>
-         <td align=\"center\" width=\"50%\"> &nbsp; </td>
-         <td align=\"center\" width=\"50%\"> &nbsp; </td>
-         </tr>
-         <tr>
-         <td align=\"center\" width=\"50%\"> &nbsp; </td>
-         <td align=\"center\" width=\"50%\"> &nbsp; </td>
-         </tr>
-          <tr>
-         <td align=\"center\" width=\"50%\"> &nbsp; </td>
-         <td align=\"center\" width=\"50%\"> &nbsp; </td>
-         </tr>
-         <tr>
-         <td align=\"center\" width=\"50%\">&nbsp;</td>
-         <td align=\"center\" width=\"50%\"> $namax </td>
-         </tr>
-         <tr>
-         <td align=\"center\" width=\"50%\">&nbsp;</td>
-         <td align=\"center\" width=\"50%\"> NIP :$nip </td>
-         </tr>
-         </table>
-         ";
         $data['prev'] = $cRet;
         $data['sikap'] = 'preview';
         $judul  = ("LRA $apbd $id / $cbulan");
         $this->template->set('title', 'LRA $apbd $id / $cbulan');        
         switch($pilih) {  
-        case 0;
-           $this->tukd_model->_mpdf('',$cRet,10,10,10,'0');
-  /*           $this->load->model('wprint');
-             $this->wprint->PopUp($cRet);*/
-        case 1;
-             echo ("<title>LRA $apbd $cbulan</title>");
-             echo $cRet;
-        break;
-        case 2;        
+            case 0;
+            $this->tukd_model->_mpdf('',$cRet,10,10,10,'0'); 
+            case 1;
+                echo ("<title>LRA $apbd $cbulan</title>");
+                echo $cRet;
+            break;
+            case 2;        
 
-            header("Content-Type: application/vnd.ms-excel");
-            header("Content-Disposition: attachment; filename= $judul.xls");
-            echo $cRet;
-            
-;
-        break;
-        case 3;     
-            header("Content-Type: application/vnd.ms-word");
-            header("Content-Disposition: attachment; filename= $judul.doc");
-            echo $cRet;
-        break;
+                header("Content-Type: application/vnd.ms-excel");
+                header("Content-Disposition: attachment; filename= $judul.xls");
+                echo $cRet; 
+            break;
+            case 3;     
+                header("Content-Type: application/vnd.ms-word");
+                header("Content-Disposition: attachment; filename= $judul.doc");
+                echo $cRet;
+            break;
         } 
     }    
-     function cetak_lra_blud_sap_konsol($cbulan="", $pilih=1){
+
+
+    function cetak_lra_blud_sap_konsol($cbulan="", $pilih=1){
     $id  = $this->session->userdata('kdskpd');
     $thn = $this->session->userdata('pcThang');
     $sqlanggaran1="select case when statu=1 and status_ubah=1 and $cbulan>=month(tgl_dpa_ubah) then '2' 
