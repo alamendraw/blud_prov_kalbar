@@ -13916,6 +13916,8 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
                 $no     = 0;  
                 $tot=0;                                
                 $oke=1; $nil_p=0; $angnil_p=0;
+                $sur_pa=0; $sur_pr=0;
+                $sur_ba=0; $sur_br=0;
                 foreach ($query4->result() as $row4)
                 {
                     
@@ -13924,54 +13926,76 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
                     $bold      = $row4->bold;
                     $real_lalu = number_format($row4->thn_m1,"2",",",".");
                     $cetak     = $row4->cetak;
-                    $n         = $row4->kode_1;
-                    $n2        = $row4->kode_2;
-                    // echo $n2; die;
-                    $n3        = $row4->kode_3;
-                    $n4        = $row4->kode_4;
-                    $n5        = $row4->kode_5; 
+                    $n         = str_replace("'","",$row4->kode_1);
+                    $n2        = str_replace("'","",$row4->kode_2); 
+                    $n3        = str_replace("'","",$row4->kode_3);
+                    $n4        = str_replace("'","",$row4->kode_4);
+                    $n5        = str_replace("'","",$row4->kode_5);
+                    if($n!='xxx'){
+                        $whr = "and left(b.kd_rek5,1)=$n";
+                    }else if($n2!='xxx'){
+                        $whr = "and left(b.kd_rek5,2)=$n2";
+                    }else if($n3!='xxx'){
+                        $whr = "and left(b.kd_rek5,3)=$n3";
+                    }else if($n4!='xxx'){
+                        $whr = "and left(b.kd_rek5,5)=$n4";
+                    }else if($n5!='xxx'){
+                        $whr = "and left(b.kd_rek5,7)=$n5";
+                    }else{
+                        $whr = 'and 1=2'; 
+                    }
+
+                    if($nor=='7'){ //Get Total Pendapatan
+                        $sur_pa=$trh->anggaran; 
+                        $sur_pr=$trh->nilai;
+                    }
+
+                    if($nor=='24'){//Get Total Belanja
+                        $sur_ba=$trh->anggaran; 
+                        $sur_br=$trh->nilai;
+                    }
 
                     //anggaran//realisasi//bersatu
-                    $sql5   = " SELECT SUM(b.nilai_ang) as anggaran, SUM(b.nilai_real) as nilai FROM $exe($cbulan,$ag_tox,$thn) b WHERE kd_skpd='$id' and ((left(b.kd_rek5,7) in ($n) or left(kd_rek5,5) in ($n2)) or left(kd_rek5,3) in ($n3)) ";
-                     
+                    $sql5   = " SELECT SUM(b.nilai_ang) as anggaran, SUM(b.nilai_real) as nilai FROM $exe($cbulan,$ag_tox,$thn) b WHERE kd_skpd='$id' $whr;                    ";
+                    //  and ((left(b.kd_rek5,1) in ($n) or left(kd_rek5,2) in ($n2)) or left(kd_rek5,3) in ($n3)) 
                     $query5 = $this->db->query($sql5); 
-                    if(!$query5){
-                        continue;
-                    }
-                    $trh    = $query5->row();
-                    $nil    = $trh->nilai;
-                    $angnil = $trh->anggaran;
+                    if($query5){
+                        $trh    = $query5->row();
+                        $nil    = $trh->nilai;
+                        $angnil = $trh->anggaran;
 
 
-                
-                    $oke++;
-                    if ($angnil < 0){
-                        $x11="("; $angnilx=$angnil*-1; $y11=")";}
-                    else {
-                        $x11=""; $angnilx=$angnil; $y11="";}
                     
-                    if ($nil < 0){
-                        $x12="("; $nilx=$nil*-1; $y12=")";}
-                    else {
-                        $x12=""; $nilx=$nil; $y12="";}
-                    
-                    $real_s = $angnil - $nil;
-                    if ($real_s < 0){
-                        $x1="("; $real_sx=$real_s*-1; $y1=")";}
-                    else {
-                        $x1=""; $real_sx=$real_s; $y1="";}
-                    $selisih = number_format($real_sx,"2",",",".");
-                    if ($nil==0){
-                        $tmp=1;
-                    }else{
-                        $tmp=$nil;
-                    }
+                        $oke++;
+                        if ($angnil < 0){
+                            $x11="("; $angnilx=$angnil*-1; $y11=")";}
+                        else {
+                            $x11=""; $angnilx=$angnil; $y11="";}
+                        
+                        if ($nil < 0){
+                            $x12="("; $nilx=$nil*-1; $y12=")";}
+                        else {
+                            $x12=""; $nilx=$nil; $y12="";}
+                        
+                        $real_s = $angnil - $nil;
+                        if ($real_s < 0){
+                            $x1="("; $real_sx=$real_s*-1; $y1=")";}
+                        else {
+                            $x1=""; $real_sx=$real_s; $y1="";}
+                        $selisih = number_format($real_sx,"2",",",".");
+                        if ($nil==0){
+                            $tmp=1;
+                        }else{
+                            $tmp=$nil;
+                        }
 
-                    $nilai    = number_format($nilx,"2",",",".");
-                    $angnilai = number_format($angnilx,"2",",",".");
-                    $per1     = ($angnil!=0)?($nil / $angnil) * 100:0; 
-                    $persen1  = number_format($per1,"2",",",".");
-                    $no       = $no + 1;
+                        $nilai    = number_format($nilx,"2",",",".");
+                        $angnilai = number_format($angnilx,"2",",",".");
+                        $per1     = ($angnil!=0)?($nil / $angnil) * 100:0; 
+                        $persen1  = number_format($per1,"2",",",".");
+                        $no       = $no + 1;
+                    }
+                    
 
                     switch ($row4->bold) {
                         case 0:
@@ -14013,12 +14037,10 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
                                     </tr>";
                             break;
 
-                        case 41:                     
-                                $nil_p    = $trh->nilai;
-                                $angnil_p = $trh->anggaran;
+                        case 5:                      
 
                             $cRet    .= "<tr><td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"5%\" align=\"center\">$nor</td>                                     
-                                        <td style=\"vertical-align:top;border-top: solid 1px black;border-left: none;border-right: none;\" width=\"40%\"><b>&nbsp;&nbsp;&nbsp;$nama</td>
+                                        <td style=\"vertical-align:top;border-top: solid 1px black;border-left: none;border-right: none;\" width=\"40%\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$nama</td>
                                         <td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"20%\" align=\"right\">$x11$angnilai$y11</td>
                                         <td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"20%\" align=\"right\">$x12$nilai$y12</td>
                                         <td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"15%\" align=\"right\">$x1$selisih$y1</td>
@@ -14047,9 +14069,10 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
                         break;
                         case 7: /*surplus*/
                                 $sur=0; $surl=0;
-                                $surl= $nil_p-$nil;
-                                $sur= $angnil_p-$angnil;
+                                $surl= $sur_pa-$sur_ba;
+                                $sur= $sur_pr-$sur_br;
                                 $surx=$sur-$surl;  
+ 
                                 $pers = ($surl>0)?$this->persen($sur,$surl):'';
                                 // echo $surl; die;
                             $cRet    .= "<tr><td style=\"vertical-align:top;border-top: solid 1px black;\" width=\"5%\" align=\"center\">$nor</td>                                     
