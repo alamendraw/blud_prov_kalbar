@@ -13954,33 +13954,33 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
                         $angnil = $trh->anggaran;
 
                         if ($angnil < 0){
-                            $angnilx='('. number_format($angnil*-1,"2",",",".") .')';
+                            $angnilx='('. $angnil*-1 .')';
                         }else {
-                            $angnilx=number_format($angnil,"2",",","."); 
+                            $angnilx=$angnil; 
                         }
                         
                         if ($nil < 0){
-                            $nilx='('. number_format($nil*-1,"2",",",".") .')';
+                            $nilx='('. $nil*-1 .')';
                         }else {
-                            $nilx=number_format($nil,"2",",","."); 
+                            $nilx=$nil; 
                         }
                         
                         $real_s = $angnil - $nil;
                         if ($real_s < 0){
-                            $real_sx='('. number_format($real_s*-1,"2",",",".") .')';
+                            $real_sx='('. $real_s*-1 .')';
                         }else{
-                            $real_sx=number_format($real_s,"2",",","."); 
+                            $real_sx=$real_s; 
                         }
 
-                        $selisih =$real_sx;
+                        $selisih = number_format($real_sx,"2",",",".");
                         if ($nil==0){
                             $tmp=1;
                         }else{
                             $tmp=$nil;
                         }
 
-                        $nilai    = $nilx;
-                        $angnilai = $angnilx;
+                        $nilai    = number_format($nilx,"2",",",".");
+                        $angnilai = number_format($angnilx,"2",",",".");
                         $per1     = ($angnil!=0)?($nil / $angnil) * 100:0; 
                         $persen1  = number_format($per1,"2",",",".");
                         $no       = $no + 1;
