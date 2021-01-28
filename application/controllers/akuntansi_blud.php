@@ -13984,6 +13984,7 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
                         $per1     = ($angnil!=0)?($nil / $angnil) * 100:0; 
                         $persen1  = number_format($per1,"2",",",".");
                         $no       = $no + 1;
+                        
                     }
                     
                     switch ($row4->bold) {
