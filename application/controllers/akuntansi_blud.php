@@ -1405,10 +1405,9 @@ function bulanx($bln){
     
 
     
-    function cetakbb_kelompok_blud_psap($dcetak='',/*$ttd='',*/$skpd='',$rek5='',$dcetak2='', $jenis=''){ //Henri_TB    
-        
+    function cetakbb_kelompok_blud_psap($dcetak='',/*$ttd='',*/$skpd='',$rek5='',$dcetak2='', $jenis=''){        
         $thn_ang = $this->session->userdata('pcThang');
-            $cRet ='<TABLE width="100%">
+        $cRet ='<TABLE width="100%">
                     <TR>
                         <TD align="center" ><B>BUKU BESAR BLUD</B></TD>
                     </TR>
@@ -1420,147 +1419,143 @@ function bulanx($bln){
                         <TD align="center" ><B></B></TD>
                         <TD align="center" ><B></B></TD>
                     </TR>
-                    </TABLE>';
+                </TABLE>';
 
-            $cRet .='<TABLE width="100%">
-                     <TR>
+        $cRet .='<TABLE width="100%">
+                    <TR>
                         <TD align="left" width="20%" >Rekening</TD>
                         <TD align="left" width="80%" >: '.$rek5.' '.$this->tukd_model->get_nama($rek5,'nm_rek5','ms_rek5','kd_rek64').'</TD>
-                     </TR>
-                     <TR>
+                    </TR>
+                    <TR>
                         <TD align="left" width="20%" >Periode</TD>
                         <TD align="left" width="80%" >: '.$this->tukd_model->tanggal_format_indonesia($dcetak).' s/d '.$this->tukd_model->tanggal_format_indonesia($dcetak2).'</TD>
-                     </TR>
-                     </TABLE>';
+                    </TR>
+                </TABLE>';
 
-            $cRet .='<TABLE style="border-collapse:collapse;" width="100%" align="center" border="1" cellspacing="0" cellpadding="4">
-                     <THEAD>
-                     <TR>
+        $cRet .='<TABLE style="border-collapse:collapse;" width="100%" align="center" border="1" cellspacing="0" cellpadding="4">
+                    <THEAD>
+                    <TR>
                         <TD width="10%"  bgcolor="#CCCCCC" align="center" >TANGGAL</TD>
-                        <TD width="30%" bgcolor="#CCCCCC" align="center" >URAIAN</TD>
-                        <TD width="5%" bgcolor="#CCCCCC" align="center" >REF</TD>
-                        <TD width="15%" bgcolor="#CCCCCC" align="center" >DEBET</TD>
-                        <TD width="15%" bgcolor="#CCCCCC" align="center" >KREDIT</TD>
-                        <TD width="15%" bgcolor="#CCCCCC" align="center" >SALDO</TD>
-                     </TR>
-                     </THEAD>';
+                        <TD width="30%"  bgcolor="#CCCCCC" align="center" >URAIAN</TD>
+                        <TD width="5%"   bgcolor="#CCCCCC" align="center" >REF</TD>
+                        <TD width="15%"  bgcolor="#CCCCCC" align="center" >DEBET</TD>
+                        <TD width="15%"  bgcolor="#CCCCCC" align="center" >KREDIT</TD>
+                        <TD width="15%"  bgcolor="#CCCCCC" align="center" >SALDO</TD>
+                    </TR>
+                    </THEAD>';
         
-     if ((substr($rek5,0,3)=='118') or (substr($rek5,0,7)=='3130101') or (substr($rek5,0,1)=='8') or (substr($rek5,0,1)=='9')){
-        $csql3 = "SELECT sum(a.debet) as debet,sum(a.kredit) as kredit FROM trdju_sap_blud a LEFT JOIN trhju_sap_blud b ON a.no_voucher=b.no_voucher AND a.kd_unit=b.kd_skpd WHERE a.kd_rek5='$rek5' AND b.kd_skpd='$skpd' and b.tgl_voucher < '$dcetak'   AND YEAR(b.tgl_voucher)='$thn_ang' and a.kd_subkegiatan='95'";
+        if ((substr($rek5,0,3)=='118') or (substr($rek5,0,7)=='3130101') or (substr($rek5,0,1)=='8') or (substr($rek5,0,1)=='9')){
+            $csql3 = "SELECT sum(a.debet) as debet,sum(a.kredit) as kredit FROM trdju_sap_blud a LEFT JOIN trhju_sap_blud b ON a.no_voucher=b.no_voucher AND a.kd_unit=b.kd_skpd WHERE left(a.kd_rek5,7)='$rek5' AND b.kd_skpd='$skpd' and b.tgl_voucher < '$dcetak'   AND YEAR(b.tgl_voucher)='$thn_ang' ";
         } else {
-         $csql3 = "SELECT sum(a.debet) as debet,sum(a.kredit) as kredit FROM trdju_sap_blud a LEFT JOIN trhju_sap_blud b ON a.no_voucher=b.no_voucher AND a.kd_unit=b.kd_skpd WHERE a.kd_rek5='$rek5' AND b.kd_skpd='$skpd' and b.tgl_voucher < '$dcetak'  and a.kd_subkegiatan='95'  ";
+            $csql3 = "SELECT sum(a.debet) as debet,sum(a.kredit) as kredit FROM trdju_sap_blud a LEFT JOIN trhju_sap_blud b ON a.no_voucher=b.no_voucher AND a.kd_unit=b.kd_skpd WHERE left(a.kd_rek5,7)='$rek5' AND b.kd_skpd='$skpd' and b.tgl_voucher < '$dcetak' ";
         }
-         
-         $hasil = $this->db->query($csql3);
-         $trh4 = $hasil->row(); 
-         $awaldebet = $trh4->debet;
-         $awalkredit = $trh4->kredit;
-                    if ((substr($rek5,0,1)=='9') or (substr($rek5,0,1)=='5') or (substr($rek5,0,2)=='62') or (substr($rek5,0,2)=='72') or (substr($rek5,0,1)=='1')){                    
-                        $saldo=$awaldebet-$awalkredit;
-                    }else{
-                        $saldo=$awalkredit-$awaldebet;
-                    } 
-                    if($saldo<0){
-                    $a='(';
-                    $saldo1=$saldo*-1;
-                    $b=')';
-                    } else{
-                    $a='';
-                    $saldo1=$saldo;
-                    $b='';  
-                    }
-                    $cRet .='<TR>
-                                <TD width="10%" align="left" ></TD>
-                                <TD width="30%" align="left" >saldo awal</TD>
-                                <TD width="5%" align="left" ></TD>
-                                <TD width="15%" align="right" ></TD>
-                                <TD width="15%" align="right" ></TD>
-                                <TD width="15%" align="right" >'.$a.''.number_format($saldo1,"2",",",".").''.$b.'</TD>
-                             </TR>';          
+        
+        $hasil = $this->db->query($csql3);
+        $trh4 = $hasil->row(); 
+        $awaldebet = $trh4->debet;
+        $awalkredit = $trh4->kredit;
+        if ((substr($rek5,0,1)=='9') or (substr($rek5,0,1)=='5') or (substr($rek5,0,2)=='62') or (substr($rek5,0,2)=='72') or (substr($rek5,0,1)=='1')){                    
+            $saldo=$awaldebet-$awalkredit;
+        }else{
+            $saldo=$awalkredit-$awaldebet;
+        } 
+        if($saldo<0){
+            $a='('; $saldo1=$saldo*-1; $b=')';
+        } else{
+            $a='';  $saldo1=$saldo; $b='';  
+        }
+
+        $cRet .='<TR>
+                    <TD width="10%" align="left" ></TD>
+                    <TD width="30%" align="left" >saldo awal</TD>
+                    <TD width="5%" align="left" ></TD>
+                    <TD width="15%" align="right" ></TD>
+                    <TD width="15%" align="right" ></TD>
+                    <TD width="15%" align="right" >'.$a.''.number_format($saldo1,"2",",",".").''.$b.'</TD>
+                </TR>';          
                 
-                $idx=1;
+        $idx=1;
                 
                 
-                $query = $this->db->query("SELECT a.kd_unit,a.kd_rek5,a.debet,a.kredit,b.tgl_voucher,b.ket,b.no_voucher FROM trdju_sap_blud a LEFT JOIN trhju_sap_blud b ON a.no_voucher=b.no_voucher AND a.kd_unit=b.kd_skpd WHERE a.kd_rek5='$rek5' AND b.kd_skpd='$skpd' AND b.tgl_voucher>='$dcetak' AND b.tgl_voucher<='$dcetak2' --and a.kd_subkegiatan='95'
-                                           order by tgl_voucher,no_voucher");
+        $query = $this->db->query("SELECT a.kd_unit,a.kd_rek5,a.debet,a.kredit,b.tgl_voucher,b.ket,b.no_voucher FROM trdju_sap_blud a LEFT JOIN trhju_sap_blud b ON a.no_voucher=b.no_voucher AND a.kd_unit=b.kd_skpd WHERE left(a.kd_rek5,7)='$rek5' AND b.kd_skpd='$skpd' AND b.tgl_voucher>='$dcetak' AND b.tgl_voucher<='$dcetak2' order by tgl_voucher,no_voucher");
                 
                 
-                if ($query->num_rows() > 0){
-                $jdebet=0;
-                $jkredit=0;
-                foreach($query->result_array() as $res){
+        if ($query->num_rows() > 0){
+            $jdebet=0;
+            $jkredit=0;
+            foreach($query->result_array() as $res){
                                         
-                    $tgl_voucher=$res['tgl_voucher'];
-                    $ket=$res['ket'];
-                    $ref=$res['no_voucher'];
-                    $debet=$res['debet'];
-                    $kredit=$res['kredit'];
-                    $unitt =$res['kd_unit'];
-                    $idx++;
-                    if($debet<0){
-                        $debet1=$debet*-1;
-                        $c='(';
-                        $d=')';
-                        }else{
-                        $c='';
-                        $d='';  
-                        $debet1=$debet;
-                        }
-                    if($kredit<0){
-                        $kredit1=$kredit*-1;
-                        $e='(';
-                        $f=')';
-                        }else{
-                        $e='';
-                        $f='';  
-                        $kredit1=$kredit;
-                        }   
-                    $saldo=$saldo;
-                    if ((substr($rek5,0,1)=='9') or (substr($rek5,0,1)=='5') or (substr($rek5,0,2)=='62') or (substr($rek5,0,2)=='72') or (substr($rek5,0,1)=='1')){                    
-                        $saldo=$saldo+$debet-$kredit;
-                    }else{
-                        $saldo=$saldo+$kredit-$debet;
-                    }
-                    if($saldo<0){
-                        $saldo1=$saldo*-1;
-                        $i='(';
-                        $j=')';
-                        }else{
-                        $saldo1=$saldo;
-                        $i='';
-                        $j='';  
-                        }
-                    $cRet .='<TR>
-                                <TD width="10%" align="left" >'.$this->tukd_model->tanggal_format_indonesia($tgl_voucher).'</TD>
-                                <TD width="30%" align="left" >'.$ket.'</TD>
-                                <TD width="5%" align="left" >'.$ref.'</TD>
-                                <TD width="15%" align="right" >'.$c.''.number_format($debet1,"2",",",".").''.$d.'</TD>
-                                <TD width="15%" align="right" >'.$e.''.number_format($kredit1,"2",",",".").''.$f.'</TD>
-                                <TD width="15%" align="right" >'.$i.''.number_format($saldo1,"2",",",".").''.$j.'</TD>
-                             </TR>';
-                             
-                    $jdebet=$jdebet+$debet;
-                    $jkredit = $jkredit + $kredit;
-    
+                $tgl_voucher=$res['tgl_voucher'];
+                $ket=$res['ket'];
+                $ref=$res['no_voucher'];
+                $debet=$res['debet'];
+                $kredit=$res['kredit'];
+                $unitt =$res['kd_unit'];
+                $idx++;
+                if($debet<0){
+                    $debet1=$debet*-1;
+                    $c='(';
+                    $d=')';
+                }else{
+                    $c='';
+                    $d='';  
+                    $debet1=$debet;
                 }
-                if($jdebet<0){
-                        $jdebet1=$jdebet*-1;
-                        $k='(';
-                        $l=')';
-                        }else{
-                        $jdebet1=$jdebet;
-                        $k='';
-                        $l='';  
-                        }
-                if($jkredit<0){
-                        $jkredit1=$jkredit*-1;
-                        $m='(';
-                        $n=')';
-                        }else{
-                        $jkredit1=$jkredit;
-                        $m='';
-                        $n='';  
-                        }
+                if($kredit<0){
+                    $kredit1=$kredit*-1;
+                    $e='(';
+                    $f=')';
+                }else{
+                    $e='';
+                    $f='';  
+                    $kredit1=$kredit;
+                }   
+                $saldo=$saldo;
+                if ((substr($rek5,0,1)=='9') or (substr($rek5,0,1)=='5') or (substr($rek5,0,2)=='62') or (substr($rek5,0,2)=='72') or (substr($rek5,0,1)=='1')){                    
+                    $saldo=$saldo+$debet-$kredit;
+                }else{
+                    $saldo=$saldo+$kredit-$debet;
+                }
+                if($saldo<0){
+                    $saldo1=$saldo*-1;
+                    $i='(';
+                    $j=')';
+                }else{
+                    $saldo1=$saldo;
+                    $i='';
+                    $j='';  
+                }
+                $cRet .='<TR>
+                            <TD width="10%" align="left" >'.$this->tukd_model->tanggal_format_indonesia($tgl_voucher).'</TD>
+                            <TD width="30%" align="left" >'.$ket.'</TD>
+                            <TD width="5%" align="left" >'.$ref.'</TD>
+                            <TD width="15%" align="right" >'.$c.''.number_format($debet1,"2",",",".").''.$d.'</TD>
+                            <TD width="15%" align="right" >'.$e.''.number_format($kredit1,"2",",",".").''.$f.'</TD>
+                            <TD width="15%" align="right" >'.$i.''.number_format($saldo1,"2",",",".").''.$j.'</TD>
+                        </TR>';
+                             
+                $jdebet=$jdebet+$debet;
+                $jkredit = $jkredit + $kredit;    
+            }
+
+            if($jdebet<0){
+                $jdebet1=$jdebet*-1;
+                $k='(';
+                $l=')';
+            }else{
+                $jdebet1=$jdebet;
+                $k='';
+                $l='';  
+            }
+            if($jkredit<0){
+                $jkredit1=$jkredit*-1;
+                $m='(';
+                $n=')';
+            }else{
+                $jkredit1=$jkredit;
+                $m='';
+                $n='';  
+            }
                 
                 $cRet .='<TR>
                     <TD width="10%" align="left" ></TD>
@@ -1571,21 +1566,19 @@ function bulanx($bln){
                     <TD width="15%" align="right" >'.$i.''.number_format($saldo1,"2",",",".").''.$j.'</TD>
                  </TR>';
                 $cRet .='</TABLE>';              
-                } else{
+        } else{
                 
-                $cRet .='</TABLE>';
-                }
+            $cRet .='</TABLE>';
+        }
             
-            if($jenis == 1){
+        if($jenis == 1){
             echo '<title> Buku Besar Kelompok BLUD</title>';
             echo $cRet;
-            }
-            if($jenis ==2){
+        }
+        if($jenis ==2){
             $this->tukd_model->_mpdf('',$cRet,10,5,10,'0'); 
-            }
+        }
     }
-    
-
     
     function cetakbb_kelompok_blud_apbd_psap($dcetak='',/*$ttd='',*/$skpd='',$rek5='',$dcetak2='', $jenis=''){ //Henri_TB   
         
@@ -13534,280 +13527,278 @@ function cetak_lak_blud_apbd_sap_lama($bln='',$pilih=''){
     
 
     
-function cetak_lak_blud_apbd_sap($bln='',$pilih=''){ 
-        $tanggalttd = $this->uri->segment(5);
-        $ttd1 = str_replace('a',' ',$this->uri->segment(6));
-        $ctgl_ttd = $this->tukd_model->tanggal_format_indonesia($tanggalttd);
-        $id     = $this->session->userdata('kdskpd');
-        $idx = str_replace('.','_',$this->session->userdata('kdskpd'));
-        $thn_ini = $this->session->userdata('pcThang');
-        $thn_lalu= $thn_ini-1;
-        $sql="SELECT TOP 1 nm_skpd from ms_skpd_blud where kd_skpd='$id'";
-        $exe=$this->db->query($sql)->row();
-        $opd=$exe->nm_skpd;
-        $oke="a$idx";
-        $bulan=$this->bulanx($bln);
+    function cetak_lak_blud_apbd_sap($bln='',$pilih=''){ 
+            $tanggalttd = $this->uri->segment(5);
+            $ttd1 = str_replace('a',' ',$this->uri->segment(6));
+            $ctgl_ttd = $this->tukd_model->tanggal_format_indonesia($tanggalttd);
+            $id     = $this->session->userdata('kdskpd');
+            $idx = str_replace('.','_',$this->session->userdata('kdskpd'));
+            $thn_ini = $this->session->userdata('pcThang');
+            $thn_lalu= $thn_ini-1;
+            $sql="SELECT TOP 1 nm_skpd from ms_skpd_blud where kd_skpd='$id'";
+            $exe=$this->db->query($sql)->row();
+            $opd=$exe->nm_skpd;
+            $oke="a$idx";
+            $bulan=$this->bulanx($bln);
 
-    $ctk="<table width='100%' style='border-collapse:collapse' border='0' cellspacing='0px' cellpadding='0px'>
-         
-            <tr style='text-align: center'>               
-                <td style='padding:15px; text-align: center;'><strong>PEMERINTAH KOTA PONTIANAK<br>BADAN LAYANAN UMUM $opd <br>LAPORAN ARUS KAS <br> UNTUK TAHUN YANG BERAKHIR SAMPAI DENGAN $bulan $thn_ini DAN $thn_lalu </td>
-                
-            </tr>
-            </table>";
-
-     $ctk.="<table width='100%' style='border-collapse:collapse' border='1' cellspacing='0px' cellpadding='0px'>
-         
-            <tr bgcolor='#CCCCCC' style='text-align: center'>               
-                <td width='5%' style='padding:15px; text-align: center'><strong>NO</td>
-                <td width='55%' style='text-align: center'><strong>URAIAN</td>
-                <td width='20%' style='text-align: center'><strong>$thn_ini</td>
-                <td width='20%' style='text-align: center'><strong>$thn_lalu</td>
-            </tr>
-          ";
-        $sqlmaplo="SELECT $oke lalu, seq, nor, uraian, bold, isnull(kode_1,0) kode_1 , kode_2 , kode_3 , kode_4, isnull(cetak,'debet-debet') as cetak FROM map_lak_blud_sap
-                   GROUP BY seq, nor, uraian, bold, kode_1 , kode_2 , kode_3 , kode_4, isnull(cetak,'debet-debet'),$oke ORDER BY seq";
-      
-                $querymaplo = $this->db->query($sqlmaplo);
-                $no     = 1;                                  
-                $arsmsuk=0; $arskeluar=0; $total1=0;
-                $arsmsuk2=0; $arskeluar2=0; $total12=0;
-                $arsmsuk3=0; $arskeluar3=0; $total13=0; $total14=0;
-                foreach ($querymaplo->result() as $a)
-                {     
-
-                    $nama      = $a->uraian;   
-                    $n1        = $a->kode_1;
-                    $n2        = $a->kode_2;
-                    $n3        = $a->kode_3;
-                    $n4        = $a->kode_4;
-                    $normal    = $a->cetak;
-                    $bold      = $a->bold;
-                    $lalu      = number_format($a->lalu,"2",",",".");
-                    $seq       = $a->seq;
-
-
-                    $quelo01   = "SELECT sum(nilai_real) nilai_real from lak_blud($bln,$thn_ini) where ((left(kd_rek5,3) in ($n1))  or (left(kd_rek5,5) in ($n2)) or (kd_rek5 in ($n3)) or (kd_rek5 in ($n4)))  and kd_skpd='$id' ";
-                    $quelo02 = $this->db->query($quelo01);
-                    $quelo03 = $quelo02->row();
-                    $nil     = $quelo03->nilai_real;
-                    $nilai    = number_format($quelo03->nilai_real,"2",",",".");
-
-                    switch ($bold) {
-                        case 0:
-                            $spasi="<b>";
-                            $tbl="<td width='20%' style='text-align:right'> </td>
-                                  <td width='20%' style='text-align:right'> </td>
-                            ";                            
-                            break;                        
-                        case 1:
-                            $spasi="<b>";
-                            $tbl="<td width='20%' style='text-align:right'> </td>
-                                  <td width='20%' style='text-align:right'> </td>
-                            ";                            
-                            break;
-                        case 2:
-                            $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                            $tbl="<td width='20%' style='text-align:right'> </td>
-                                  <td width='20%' style='text-align:right'> </td>
-                            ";                            
-                            break;
-                        case 3:
-                            if($seq=='312' && $id=='1.02.01.01'){
-                                $arma=0;
-                                $spasi="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                                $tbl="<td width='20%' style='text-align:right'> ".$this->minim($arma)."</td>
-                                      <td width='20%' style='text-align:right'> $lalu</td>
-                                ";
-                            } else{
-                                $spasi="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                                $tbl="<td width='20%' style='text-align:right'> $nilai</td>
-                                      <td width='20%' style='text-align:right'> $lalu</td>
-                                ";                                
-                            }
-
-                            break;
-                        case 4:
-                          if(($seq=='315' || $seq='345') && $id=='1.02.01.01'){
-                                $arma1=0+$nil;
-                                $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                                $tbl="<td width='20%' style='text-align:right'> ".$this->minim($arma1)."</td>
-                                      <td width='20%' style='text-align:right'> $lalu</td>
-                                ";
-                            } else{
-                                $arma1=0;
-                                $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                                $tbl="<td width='20%' style='text-align:right'> $nilai</td>
-                                      <td width='20%' style='text-align:right'> $lalu</td>
-                                ";                                
-                            }
-
-                            break;
-                        case 41:
-                                $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                                $tbl="<td width='20%' style='text-align:right'> $nilai</td>
-                                      <td width='20%' style='text-align:right'> $lalu</td>
-                                ";      
-                            break;               
-                        case 23: /*No 8. Seq 40. Jumlah Arus Masuk Kas*/
-                            $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                            $tbl="<td width='20%' style='text-align:right'>$nilai</td>
-                                  <td width='20%' style='text-align:right'> $lalu</td>";
-                            $arsmsuk=$nil;
-                            break;
-                        case 24: /*No 19. Seq 95. Jumlah Arus Keluar Kas*/
-                            $arskeluar=$nil;
-                            $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                            $tbl="<td width='20%' style='text-align:right'>$nilai</td>
-                                  <td width='20%' style='text-align:right'>$lalu</td>";
-                            break;
-                        case 7: /*No 21. Seq 105. Arus Kas Bersih dari Aktivitas Operasi*/
-                            $total1=$arsmsuk - $arskeluar;
-                            $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                            $tbl="<td width='20%' style='text-align:right'>".number_format($total1,"2",",",".")."</td>
-                                  <td width='20%' style='text-align:right'> $lalu</td>";
-                            break; 
-                        case 91: /*No 32 Seq 160. Jumlah Arus Masuk Kas */
-                            $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                            $tbl="<td width='20%' style='text-align:right'>$nilai</td>
-                                  <td width='20%' style='text-align:right'> $lalu</td>";
-                            $arsmsuk2=$nil;
-                            break;
-                        case 92: /*No 42 Seq 210. Jumlah Arus Keluar Kas */
-                            $arskeluar2=$nil;
-                            $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                            $tbl="<td width='20%' style='text-align:right'>$nilai</td>
-                                  <td width='20%' style='text-align:right'>$lalu</td>";
-                            break;
-                        case 93:   /* 44 220 Arus Kas Bersih dari Aktivitas Investasi*/
-                            $total12=$arsmsuk2 - $arskeluar2;
-                            $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                            $tbl="<td width='20%' style='text-align:right'> ".number_format($total12,"2",",",".")."</td>
-                                  <td width='20%' style='text-align:right'> $lalu</td>";
-                            break;                              
-                        case 74:
-                            $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                            $tbl="<td width='20%' style='text-align:right'>$nilai</td>
-                                  <td width='20%' style='text-align:right'> $lalu</td>";
-                            $arsmsuk3=$nil;
-                            break;
-                        case 75: /*No 50. Seq. 250 Jumlah Arus Keluar Kas */
-                            $arskeluar3=$nil;
-                            $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                            $tbl="<td width='20%' style='text-align:right'>$nilai</td>
-                                  <td width='20%' style='text-align:right'>$lalu</td>";
-                            break;
-                        case 76: /*58 290 Arus Kas Bersih dari Aktivitas Pendanaan */
-                            $total13=$arsmsuk3 - $arskeluar3;
-                            $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                            $tbl="<td width='20%' style='text-align:right'> ".number_format($total13,"2",",",".")."</td>
-                                  <td width='20%' style='text-align:right'> $lalu</td>";
-                            break;
-                        case 99: /*73 355 Kenaikan / Penurunan Kas BLUD*/
-                            $total14=number_format($total1+$total12+$total13+$arma1,"2",",",".");
-                            $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                            $tbl="<td width='20%' style='text-align:right'> $total14</td>
-                                  <td width='20%' style='text-align:right'> $lalu</td>";
-                            break;
-                        case 67: /*74 360 Saldo Awal Kas Setara Kas BLUD*/
-                            $sql="select $oke halu from map_lak_blud_sap where nor='75'";
-                            $exe=$this->db->query($sql)->row();
-                            $sxe=$exe->halu;
-                            $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                            $tbl="<td width='20%' style='text-align:right'> ".number_format($sxe,"2",",",".")."</td>
-                                  <td width='20%' style='text-align:right'> $lalu</td>";
-                            break;
-                        case 45: /*75 365 Saldo Akhir Kas Setara Kas BLUD*/
-                            $tot75=
-                            $tot75=$sxe+$nil;
-                            $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                            $tbl="<td width='20%' style='text-align:right'> ".number_format($tot75,"2",",",".")."</td>
-                                  <td width='20%' style='text-align:right'> $lalu</td>";
-                            break;                            
-                    }
-
-            $ctk.=" <tr>
-                <td width='5%' style='text-align:center'; padding:10px>$no </td>
-                <td width='55%'>$spasi $nama </td>
-                $tbl
-            </tr>";
-            $no++;
-                }
-            $ctk.="</table>";
-
-     $sqlttd1="SELECT nama as nm,nip as nip,jabatan as jab FROM ms_ttd_blud where kd_skpd='$id' and kode='PA' and nip='$ttd1'";
-            $sqlttd=$this->db->query($sqlttd1);
-            foreach ($sqlttd->result() as $rowttd)
+        $ctk="<table width='100%' style='border-collapse:collapse' border='0' cellspacing='0px' cellpadding='0px'>
             
-                {
-                    $nip=$rowttd->nip;                    
-                    $oioi= $rowttd->nm;
-                    $jabatan = $rowttd->jab;
-                }   
+                <tr style='text-align: center'>               
+                    <td style='padding:15px; text-align: center;'><strong>PEMERINTAH KOTA PONTIANAK<br>BADAN LAYANAN UMUM $opd <br>LAPORAN ARUS KAS <br> UNTUK TAHUN YANG BERAKHIR SAMPAI DENGAN $bulan $thn_ini DAN $thn_lalu </td>
+                    
+                </tr>
+                </table>";
 
+        $ctk.="<table width='100%' style='border-collapse:collapse' border='1' cellspacing='0px' cellpadding='0px'>
             
-        $ctk .="<table style=\"border-collapse:collapse;\" width=\"100%\" align=\"center\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
-         <tr>
-         <td align=\"center\" width=\"50%\"> &nbsp; </td>
-         <td align=\"center\" width=\"50%\"> &nbsp; </td>
-         </tr>
-         <tr>
-         <td align=\"center\" width=\"50%\"> &nbsp; </td>
-         <td align=\"center\" width=\"50%\"> Pontianak, $ctgl_ttd</td>
-         </tr>      
-         <tr>
-         <td align=\"center\" width=\"50%\"> &nbsp; </td>
-         <td align=\"center\" width=\"50%\"> $jabatan </td>
-         </tr>  
-         <tr>
-         <td align=\"center\" width=\"50%\"> &nbsp; </td>
-         <td align=\"center\" width=\"50%\"> &nbsp; </td>
-         </tr>
-         <tr>
-         <td align=\"center\" width=\"50%\"> &nbsp; </td>
-         <td align=\"center\" width=\"50%\"> &nbsp; </td>
-         </tr>
-          <tr>
-         <td align=\"center\" width=\"50%\"> &nbsp; </td>
-         <td align=\"center\" width=\"50%\"> &nbsp; </td>
-         </tr>
-         <tr>
-         <td align=\"center\" width=\"50%\"> &nbsp; </td>
-         <td align=\"center\" width=\"50%\"> $oioi </td>
-         </tr>
-         <tr>
-         <td align=\"center\" width=\"50%\"> &nbsp; </td>
-         <td align=\"center\" width=\"50%\"> NIP :$nip </td>
-         </tr>
-         </table>
-         ";
-        switch($pilih) {       
-        case 1;
-            echo ("<title>LAK APBD & BLUD UPTD $bulan</title>");
-             echo $ctk;
-        break;
-        case 2;        
-            header("Cache-Control: no-cache, no-store, must-revalidate");
-            header("Content-Type: application/vnd.ms-excel");
-            header("Content-Disposition: attachment; filename= $judul.xls");
-            echo $ctk;
-
-        break;
-        case 3;     
-            header("Cache-Control: no-cache, no-store, must-revalidate");
-            header("Content-Type: application/vnd.ms-word");
-            header("Content-Disposition: attachment; filename= LAK.doc");
-            echo $ctk;
-        break;
-         case 0;
-              $this->tukd_model->_mpdf('',$ctk,10,10,10,'0');
-         break;
-        } 
+                <tr bgcolor='#CCCCCC' style='text-align: center'>               
+                    <td width='5%' style='padding:15px; text-align: center'><strong>NO</td>
+                    <td width='55%' style='text-align: center'><strong>URAIAN</td>
+                    <td width='20%' style='text-align: center'><strong>$thn_ini</td>
+                    <td width='20%' style='text-align: center'><strong>$thn_lalu</td>
+                </tr>
+            ";
+            $sqlmaplo="SELECT $oke lalu, seq, nor, uraian, bold, isnull(kode_1,0) kode_1 , kode_2 , kode_3 , kode_4, isnull(cetak,'debet-debet') as cetak FROM map_lak_blud_sap
+                    GROUP BY seq, nor, uraian, bold, kode_1 , kode_2 , kode_3 , kode_4, isnull(cetak,'debet-debet'),$oke ORDER BY seq";
         
-   
-   
-  /* $this->tukd_model->_mpdf('',$ctk,10,10,10,'0');*/
-}
+                    $querymaplo = $this->db->query($sqlmaplo);
+                    $no     = 1;                                  
+                    $arsmsuk=0; $arskeluar=0; $total1=0;
+                    $arsmsuk2=0; $arskeluar2=0; $total12=0;
+                    $arsmsuk3=0; $arskeluar3=0; $total13=0; $total14=0;
+                    foreach ($querymaplo->result() as $a)
+                    {     
+
+                        $nama      = $a->uraian;   
+                        $n1        = $a->kode_1;
+                        $n2        = $a->kode_2;
+                        $n3        = $a->kode_3;
+                        $n4        = $a->kode_4;
+                        $normal    = $a->cetak;
+                        $bold      = $a->bold;
+                        $lalu      = number_format($a->lalu,"2",",",".");
+                        $seq       = $a->seq;
+
+
+                        $quelo01   = "SELECT sum(nilai_real) nilai_real from lak_blud($bln,$thn_ini) where ((left(kd_rek5,3) in ($n1))  or (left(kd_rek5,5) in ($n2)) or (kd_rek5 in ($n3)) or (kd_rek5 in ($n4)))  and kd_skpd='$id' ";
+                        $quelo02 = $this->db->query($quelo01);
+                        $quelo03 = $quelo02->row();
+                        $nil     = $quelo03->nilai_real;
+                        $nilai    = number_format($quelo03->nilai_real,"2",",",".");
+
+                        switch ($bold) {
+                            case 0:
+                                $spasi="<b>";
+                                $tbl="<td width='20%' style='text-align:right'> </td>
+                                    <td width='20%' style='text-align:right'> </td>
+                                ";                            
+                                break;                        
+                            case 1:
+                                $spasi="<b>";
+                                $tbl="<td width='20%' style='text-align:right'> </td>
+                                    <td width='20%' style='text-align:right'> </td>
+                                ";                            
+                                break;
+                            case 2:
+                                $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                                $tbl="<td width='20%' style='text-align:right'> </td>
+                                    <td width='20%' style='text-align:right'> </td>
+                                ";                            
+                                break;
+                            case 3:
+                                if($seq=='312' && $id=='1.02.01.01'){
+                                    $arma=0;
+                                    $spasi="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                                    $tbl="<td width='20%' style='text-align:right'> ".$this->minim($arma)."</td>
+                                        <td width='20%' style='text-align:right'> $lalu</td>
+                                    ";
+                                } else{
+                                    $spasi="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                                    $tbl="<td width='20%' style='text-align:right'> $nilai</td>
+                                        <td width='20%' style='text-align:right'> $lalu</td>
+                                    ";                                
+                                }
+
+                                break;
+                            case 4:
+                            if(($seq=='315' || $seq='345') && $id=='1.02.01.01'){
+                                    $arma1=0+$nil;
+                                    $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                                    $tbl="<td width='20%' style='text-align:right'> ".$this->minim($arma1)."</td>
+                                        <td width='20%' style='text-align:right'> $lalu</td>
+                                    ";
+                                } else{
+                                    $arma1=0;
+                                    $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                                    $tbl="<td width='20%' style='text-align:right'> $nilai</td>
+                                        <td width='20%' style='text-align:right'> $lalu</td>
+                                    ";                                
+                                }
+
+                                break;
+                            case 41:
+                                    $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                                    $tbl="<td width='20%' style='text-align:right'> $nilai</td>
+                                        <td width='20%' style='text-align:right'> $lalu</td>
+                                    ";      
+                                break;               
+                            case 23: /*No 8. Seq 40. Jumlah Arus Masuk Kas*/
+                                $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                                $tbl="<td width='20%' style='text-align:right'>$nilai</td>
+                                    <td width='20%' style='text-align:right'> $lalu</td>";
+                                $arsmsuk=$nil;
+                                break;
+                            case 24: /*No 19. Seq 95. Jumlah Arus Keluar Kas*/
+                                $arskeluar=$nil;
+                                $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                                $tbl="<td width='20%' style='text-align:right'>$nilai</td>
+                                    <td width='20%' style='text-align:right'>$lalu</td>";
+                                break;
+                            case 7: /*No 21. Seq 105. Arus Kas Bersih dari Aktivitas Operasi*/
+                                $total1=$arsmsuk - $arskeluar;
+                                $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                                $tbl="<td width='20%' style='text-align:right'>".number_format($total1,"2",",",".")."</td>
+                                    <td width='20%' style='text-align:right'> $lalu</td>";
+                                break; 
+                            case 91: /*No 32 Seq 160. Jumlah Arus Masuk Kas */
+                                $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                                $tbl="<td width='20%' style='text-align:right'>$nilai</td>
+                                    <td width='20%' style='text-align:right'> $lalu</td>";
+                                $arsmsuk2=$nil;
+                                break;
+                            case 92: /*No 42 Seq 210. Jumlah Arus Keluar Kas */
+                                $arskeluar2=$nil;
+                                $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                                $tbl="<td width='20%' style='text-align:right'>$nilai</td>
+                                    <td width='20%' style='text-align:right'>$lalu</td>";
+                                break;
+                            case 93:   /* 44 220 Arus Kas Bersih dari Aktivitas Investasi*/
+                                $total12=$arsmsuk2 - $arskeluar2;
+                                $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                                $tbl="<td width='20%' style='text-align:right'> ".number_format($total12,"2",",",".")."</td>
+                                    <td width='20%' style='text-align:right'> $lalu</td>";
+                                break;                              
+                            case 74:
+                                $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                                $tbl="<td width='20%' style='text-align:right'>$nilai</td>
+                                    <td width='20%' style='text-align:right'> $lalu</td>";
+                                $arsmsuk3=$nil;
+                                break;
+                            case 75: /*No 50. Seq. 250 Jumlah Arus Keluar Kas */
+                                $arskeluar3=$nil;
+                                $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                                $tbl="<td width='20%' style='text-align:right'>$nilai</td>
+                                    <td width='20%' style='text-align:right'>$lalu</td>";
+                                break;
+                            case 76: /*58 290 Arus Kas Bersih dari Aktivitas Pendanaan */
+                                $total13=$arsmsuk3 - $arskeluar3;
+                                $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                                $tbl="<td width='20%' style='text-align:right'> ".number_format($total13,"2",",",".")."</td>
+                                    <td width='20%' style='text-align:right'> $lalu</td>";
+                                break;
+                            case 99: /*73 355 Kenaikan / Penurunan Kas BLUD*/
+                                $total14=number_format($total1+$total12+$total13+$arma1,"2",",",".");
+                                $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                                $tbl="<td width='20%' style='text-align:right'> $total14</td>
+                                    <td width='20%' style='text-align:right'> $lalu</td>";
+                                break;
+                            case 67: /*74 360 Saldo Awal Kas Setara Kas BLUD*/
+                                $sql="select $oke halu from map_lak_blud_sap where nor='75'";
+                                $exe=$this->db->query($sql)->row();
+                                $sxe=$exe->halu;
+                                $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                                $tbl="<td width='20%' style='text-align:right'> ".number_format($sxe,"2",",",".")."</td>
+                                    <td width='20%' style='text-align:right'> $lalu</td>";
+                                break;
+                            case 45: /*75 365 Saldo Akhir Kas Setara Kas BLUD*/
+                                $tot75=
+                                $tot75=$sxe+$nil;
+                                $spasi="<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                                $tbl="<td width='20%' style='text-align:right'> ".number_format($tot75,"2",",",".")."</td>
+                                    <td width='20%' style='text-align:right'> $lalu</td>";
+                                break;                            
+                        }
+
+                $ctk.=" <tr>
+                    <td width='5%' style='text-align:center'; padding:10px>$no </td>
+                    <td width='55%'>$spasi $nama </td>
+                    $tbl
+                </tr>";
+                $no++;
+                    }
+                $ctk.="</table>";
+
+        $sqlttd1="SELECT nama as nm,nip as nip,jabatan as jab FROM ms_ttd_blud where kd_skpd='$id' and kode='PA' and nip='$ttd1'";
+                $sqlttd=$this->db->query($sqlttd1);
+                foreach ($sqlttd->result() as $rowttd)
+                
+                    {
+                        $nip=$rowttd->nip;                    
+                        $oioi= $rowttd->nm;
+                        $jabatan = $rowttd->jab;
+                    }   
+
+                
+            $ctk .="<table style=\"border-collapse:collapse;\" width=\"100%\" align=\"center\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
+            <tr>
+            <td align=\"center\" width=\"50%\"> &nbsp; </td>
+            <td align=\"center\" width=\"50%\"> &nbsp; </td>
+            </tr>
+            <tr>
+            <td align=\"center\" width=\"50%\"> &nbsp; </td>
+            <td align=\"center\" width=\"50%\"> Pontianak, $ctgl_ttd</td>
+            </tr>      
+            <tr>
+            <td align=\"center\" width=\"50%\"> &nbsp; </td>
+            <td align=\"center\" width=\"50%\"> $jabatan </td>
+            </tr>  
+            <tr>
+            <td align=\"center\" width=\"50%\"> &nbsp; </td>
+            <td align=\"center\" width=\"50%\"> &nbsp; </td>
+            </tr>
+            <tr>
+            <td align=\"center\" width=\"50%\"> &nbsp; </td>
+            <td align=\"center\" width=\"50%\"> &nbsp; </td>
+            </tr>
+            <tr>
+            <td align=\"center\" width=\"50%\"> &nbsp; </td>
+            <td align=\"center\" width=\"50%\"> &nbsp; </td>
+            </tr>
+            <tr>
+            <td align=\"center\" width=\"50%\"> &nbsp; </td>
+            <td align=\"center\" width=\"50%\"> $oioi </td>
+            </tr>
+            <tr>
+            <td align=\"center\" width=\"50%\"> &nbsp; </td>
+            <td align=\"center\" width=\"50%\"> NIP :$nip </td>
+            </tr>
+            </table>
+            ";
+            switch($pilih) {       
+            case 1;
+                echo ("<title>LAK APBD & BLUD UPTD $bulan</title>");
+                echo $ctk;
+            break;
+            case 2;        
+                header("Cache-Control: no-cache, no-store, must-revalidate");
+                header("Content-Type: application/vnd.ms-excel");
+                header("Content-Disposition: attachment; filename= $judul.xls");
+                echo $ctk;
+
+            break;
+            case 3;     
+                header("Cache-Control: no-cache, no-store, must-revalidate");
+                header("Content-Type: application/vnd.ms-word");
+                header("Content-Disposition: attachment; filename= LAK.doc");
+                echo $ctk;
+            break;
+            case 0;
+                $this->tukd_model->_mpdf('',$ctk,10,10,10,'0');
+            break;
+            }
+            
+    /* $this->tukd_model->_mpdf('',$ctk,10,10,10,'0');*/
+    }
  
     function cetak_lra_blud_sap($cbulan="", $pilih=1){ 
         $id  = $this->session->userdata('kdskpd');
@@ -13817,21 +13808,20 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
         $ttd1       = str_replace('a',' ',$this->uri->segment(6));
         $apbd       = $this->uri->segment(7);
 
-        $sqlanggaran1="select case when statu=1 and status_ubah=1 and $cbulan>=month(tgl_dpa_ubah) then '2' 
+        $sqlanggaran1 = "select case when statu=1 and status_ubah=1 and $cbulan>=month(tgl_dpa_ubah) then '2' 
                         when statu=1 and status_ubah=1 and  $cbulan<month(tgl_dpa_ubah) then '1'
                         when statu=1 and status_ubah=0 and $cbulan>=month(tgl_dpa) then '1'
                         else '1' end as anggaran from trhrka_blud where kd_skpd='$id'";
         
-        $sqlanggaran=$this->db->query($sqlanggaran1)->row();
-        $ag_tox=$sqlanggaran->anggaran; 
-            
+        $sqlanggaran = $this->db->query($sqlanggaran1)->row();
+        $ag_tox = $sqlanggaran->anggaran;
         $ctgl_ttd = $this->tukd_model->tanggal_format_indonesia($tanggalttd);
             
-        $sqlttd1="SELECT nama as nm, nip as nip, jabatan as jab, pangkat FROM ms_ttd_blud where nip='$ttd1' AND kode ='PA' and left(kd_skpd,7) = left('$id',7)";
+        $sqlttd1 = "SELECT nama as nm, nip as nip, jabatan as jab, pangkat FROM ms_ttd_blud where nip='$ttd1' AND kode ='PA' and left(kd_skpd,7) = left('$id',7)";
         $sqlttd=$this->db->query($sqlttd1);
         foreach ($sqlttd->result() as $rowttd){
-            $nip=$rowttd->nip;                    
-            $namax= $rowttd->nm;
+            $nip = $rowttd->nip;                    
+            $namax = $rowttd->nm;
             $jabatan  = $rowttd->jab;
             $pangkat  = $rowttd->pangkat;
         }
@@ -13841,21 +13831,20 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
         foreach ($sqlsclient->result() as $rowsc) {
             $nmskpd  = $rowsc->nm_skpd;
         } 
-        
+
         $nm_skpd    = strtoupper ($nmskpd);
         $jk=$this->rka_model->combo_skpd();
-    
+
         $cRet='';
-        
         $modtahun= $thn%4;
     
         if ($modtahun = 0){
-            $nilaibulan=".31 JANUARI.29 FEBRUARI.31 MARET.30 APRIL.31 MEI.30 JUNI.31 JULI.31 AGUSTUS.30 SEPTEMBER.31 OKTOBER.30 NOVEMBER.31 DESEMBER";
+            $nilaibulan = ".31 JANUARI.29 FEBRUARI.31 MARET.30 APRIL.31 MEI.30 JUNI.31 JULI.31 AGUSTUS.30 SEPTEMBER.31 OKTOBER.30 NOVEMBER.31 DESEMBER";
         }else {
-            $nilaibulan=".31 JANUARI.28 FEBRUARI.31 MARET.30 APRIL.31 MEI.30 JUNI.31 JULI.31 AGUSTUS.30 SEPTEMBER.31 OKTOBER.30 NOVEMBER.31 DESEMBER";
+            $nilaibulan = ".31 JANUARI.28 FEBRUARI.31 MARET.30 APRIL.31 MEI.30 JUNI.31 JULI.31 AGUSTUS.30 SEPTEMBER.31 OKTOBER.30 NOVEMBER.31 DESEMBER";
         }
     
-        $arraybulan=explode(".",$nilaibulan);
+        $arraybulan = explode(".",$nilaibulan);
     
         $cRet .="<table style='border-collapse:collapse;' width='100%' align='center' border='0' cellspacing='0' cellpadding='4'>
                     <tr>
@@ -13893,18 +13882,18 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
                     </tr>";
 
                 if($apbd=="blud"){
-                    $exe="lra_blud";
-                    $map="map_lra_blud";
-                    $nil_lra_blud=0;
+                    $exe = "lra_blud";
+                    $map = "map_lra_blud";
+                    $nil_lra_blud = 0;
                 } else {
-                    $exe="lra_blud_apbd";
-                    $map="map_lra_blud_apbd";
-                    $nil_lra_blud_apbd=0;
+                    $exe = "lra_blud_apbd";
+                    $map = "map_lra_blud_apbd";
+                    $nil_lra_blud_apbd = 0;
                 }          
             
                 $no     = 0;          
-                $sur_pa=0; $sur_pr=0;
-                $sur_ba=0; $sur_br=0;
+                $sur_pa = 0; $sur_pr = 0;
+                $sur_ba = 0; $sur_br = 0;
                 
                 $sql4="SELECT nor, uraian, cetak,   bold, kode_1, kode_2, kode_3, kode_4, kode_5, thn_m1 FROM $map ORDER BY seq";
                 $query4 = $this->db->query($sql4);
@@ -13946,7 +13935,6 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
                     }
 
                     $sql5   = " SELECT SUM(b.nilai_ang) as anggaran, SUM(b.nilai_real) as nilai FROM $exe($cbulan,$ag_tox,$thn) b WHERE kd_skpd='$id' $whr";
-                    
                     $query5 = $this->db->query($sql5); 
                     if($query5){
                         $trh    = $query5->row();
@@ -13954,15 +13942,15 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
                         $angnil = $trh->anggaran;
 
                         if ($angnil < 0){
-                            $angnilx='('. number_format($angnil*-1,"2",",",".") .')';
+                            $angnilai='('. number_format($angnil*-1,"2",",",".") .')';
                         }else {
-                            $angnilx=number_format($angnil,"2",",","."); 
+                            $angnilai=number_format($angnil,"2",",","."); 
                         }
                         
                         if ($nil < 0){
-                            $nilx='('. number_format($nil*-1,"2",",",".") .')';
+                            $nilai='('. number_format($nil*-1,"2",",",".") .')';
                         }else {
-                            $nilx=number_format($nil,"2",",","."); 
+                            $nilai=number_format($nil,"2",",","."); 
                         }
                         
                         $real_s = $angnil - $nil;
@@ -13979,8 +13967,6 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
                             $tmp=$nil;
                         }
 
-                        $nilai    = $nilx;
-                        $angnilai = $angnilx;
                         $per1     = ($angnil!=0)?($nil / $angnil) * 100:0; 
                         $persen1  = number_format($per1,"2",",",".");
                         $no       = $no + 1;
@@ -14085,9 +14071,8 @@ function cetak_lak_blud_apbd_sap($bln='',$pilih=''){
                     }                
                 }
 
-        $cRet .=       " </table>";
+        $cRet .=" </table>";
         $data['prev']   = $cRet;
-        $cRet         .= "</table>";
         
         $cRet .="<table style='border-collapse:collapse;' width='100%' align='center' border='0' cellspacing='0' cellpadding='0'>
                     <tr>

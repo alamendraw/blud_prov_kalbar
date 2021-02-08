@@ -688,6 +688,8 @@
                <td colspan="5">Jenis Jurnal<select  name="j_j" id="j_j" >
 			<option value="01">APBD</option>
 			<option value="95">BLUD</option>
+			<option value="38">Mutasi Masuk dan Keluar Aset</option>
+			<option value="45">Koreksi Lain-lain</option>
 			</select>
 					<a class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:kosong();load_detail();">Tambah</a>
                     <a class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="javascript:simpan_ju();">Simpan</a>
